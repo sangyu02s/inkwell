@@ -10,6 +10,7 @@ Thumbs.db
 # Dependencies
 frontend/node_modules/
 backend/target/
+backend/data/
 
 # Build outputs
 frontend/dist/
