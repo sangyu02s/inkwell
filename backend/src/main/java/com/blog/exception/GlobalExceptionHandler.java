@@ -13,8 +13,8 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler(PostNotFoundException.class)
-  public ResponseEntity<String> handleNotFound(PostNotFoundException ex) {
+  @ExceptionHandler(InkNotFoundException.class)
+  public ResponseEntity<String> handleNotFound(InkNotFoundException ex) {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
   }
 

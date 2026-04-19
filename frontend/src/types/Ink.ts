@@ -1,4 +1,4 @@
-export interface Post {
+export interface Ink {
   id: number;
   title: string;
   content: string;

@@ -1,9 +1,9 @@
 package com.blog.repository;
 
-import com.blog.entity.Post;
+import com.blog.entity.Ink;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface InkRepository extends JpaRepository<Ink, Long> {
 }

@@ -1,26 +1,26 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { postsApi } from '../api/posts';
+import { inksApi } from '../api/inks';
 import PostListSkeleton from '../components/PostListSkeleton';
 import Pagination from '../components/Pagination';
 
 const DEFAULT_PAGE = 0;
 const DEFAULT_SIZE = 10;
 
-export default function PostListPage() {
+export default function InkListPage() {
   const queryClient = useQueryClient();
   const [page, setPage] = useState(DEFAULT_PAGE);
   const [size] = useState(DEFAULT_SIZE);
 
   const { data: pageData, isLoading, error } = useQuery({
-    queryKey: ['posts', { page, size }],
-    queryFn: () => postsApi.getAll({ page, size }),
+    queryKey: ['inks', { page, size }],
+    queryFn: () => inksApi.getAll({ page, size }),
   });
 
   const deleteMutation = useMutation({
-    mutationFn: postsApi.delete,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['posts'] }),
+    mutationFn: inksApi.delete,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['inks'] }),
   });
 
   const handlePageChange = (newPage: number) => {
@@ -31,24 +31,24 @@ export default function PostListPage() {
   const end = Math.min((page + 1) * size, pageData?.totalElements || 0);
 
   if (isLoading) return <PostListSkeleton count={size} />;
-  if (error) return <div className="error">Failed to load posts</div>;
+  if (error) return <div className="error">Failed to load inks</div>;
 
   return (
     <div className="post-list">
-      <h2>All Posts</h2>
+      <h2>All Inks</h2>
       {pageData?.content.length === 0 ? (
-        <p>No posts yet. <Link to="/posts/new">Create one!</Link></p>
+        <p>No inks yet. <Link to="/inks/new">Create one!</Link></p>
       ) : (
         <>
-          {pageData?.content.map(post => (
-            <article key={post.id} className="post-card">
-              <h3><Link to={`/posts/${post.id}`}>{post.title}</Link></h3>
-              <p className="post-meta">{new Date(post.createdAt).toLocaleDateString()}</p>
+          {pageData?.content.map(ink => (
+            <article key={ink.id} className="post-card">
+              <h3><Link to={`/inks/${ink.id}`}>{ink.title}</Link></h3>
+              <p className="post-meta">{new Date(ink.createdAt).toLocaleDateString()}</p>
               <div className="post-actions">
-                <Link to={`/posts/${post.id}`} className="btn">View</Link>
-                <Link to={`/posts/${post.id}/edit`} className="btn">Edit</Link>
+                <Link to={`/inks/${ink.id}`} className="btn">View</Link>
+                <Link to={`/inks/${ink.id}/edit`} className="btn">Edit</Link>
                 <button
-                  onClick={() => deleteMutation.mutate(post.id)}
+                  onClick={() => deleteMutation.mutate(ink.id)}
                   className="btn btn-danger"
                 >
                   Delete
@@ -57,7 +57,7 @@ export default function PostListPage() {
             </article>
           ))}
           <div className="pagination-summary">
-            Showing {start}–{end} of {pageData?.totalElements} posts
+            Showing {start}–{end} of {pageData?.totalElements} inks
           </div>
           <Pagination
             currentPage={page}

@@ -6,8 +6,8 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "posts")
-public class Post {
+@Table(name = "inks")
+public class Ink {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -28,7 +28,6 @@ public class Post {
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
-  // Getters and setters
   public Long getId() {
     return id;
   }

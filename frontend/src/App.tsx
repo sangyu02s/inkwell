@@ -1,23 +1,23 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
-import PostListPage from './pages/PostListPage';
-import PostDetailPage from './pages/PostDetailPage';
-import PostFormPage from './pages/PostFormPage';
+import InkListPage from './pages/InkListPage';
+import InkDetailPage from './pages/InkDetailPage';
+import InkFormPage from './pages/InkFormPage';
 
 function App() {
   return (
     <div className="app">
       <header className="header">
         <h1><Link to="/">Inkwell</Link></h1>
-        <nav><Link to="/posts/new" className="btn-primary">New Post</Link></nav>
+        <nav><Link to="/inks/new" className="btn-primary">New Ink</Link></nav>
       </header>
       <main className="main">
         <ErrorBoundary>
           <Routes>
-            <Route path="/" element={<PostListPage />} />
-            <Route path="/posts/new" element={<PostFormPage />} />
-            <Route path="/posts/:id" element={<PostDetailPage />} />
-            <Route path="/posts/:id/edit" element={<PostFormPage />} />
+            <Route path="/" element={<InkListPage />} />
+            <Route path="/inks/new" element={<InkFormPage />} />
+            <Route path="/inks/:id" element={<InkDetailPage />} />
+            <Route path="/inks/:id/edit" element={<InkFormPage />} />
           </Routes>
         </ErrorBoundary>
       </main>

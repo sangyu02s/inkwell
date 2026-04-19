@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { postsApi } from '../api/posts';
+import { inksApi } from '../api/inks';
 import { postTitleSchema, postContentSchema } from '../validation/schemas';
 
 interface FormErrors {
@@ -9,7 +9,7 @@ interface FormErrors {
   content?: string;
 }
 
-export default function PostFormPage() {
+export default function InkFormPage() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const isEdit = !!id;
@@ -18,23 +18,23 @@ export default function PostFormPage() {
   const [content, setContent] = useState('');
   const [errors, setErrors] = useState<FormErrors>({});
 
-  const { data: post } = useQuery({
-    queryKey: ['posts', id],
-    queryFn: () => postsApi.getById(Number(id)),
+  const { data: ink } = useQuery({
+    queryKey: ['inks', id],
+    queryFn: () => inksApi.getById(Number(id)),
     enabled: isEdit,
   });
 
   useEffect(() => {
-    if (post) {
+    if (ink) {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing form state from query data is intentional
-      setTitle(post.title);
-      setContent(post.content);
+      setTitle(ink.title);
+      setContent(ink.content);
     }
-  }, [post]);
+  }, [ink]);
 
   const mutation = useMutation({
     mutationFn: (data: { title: string; content: string }) =>
-      isEdit ? postsApi.update(Number(id), data) : postsApi.create(data),
+      isEdit ? inksApi.update(Number(id), data) : inksApi.create(data),
     onSuccess: () => navigate('/'),
   });
 
@@ -64,7 +64,7 @@ export default function PostFormPage() {
 
   return (
     <div className="post-form">
-      <h2>{isEdit ? 'Edit Post' : 'New Post'}</h2>
+      <h2>{isEdit ? 'Edit Ink' : 'New Ink'}</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Title</label>
