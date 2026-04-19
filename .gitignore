@@ -24,6 +24,3 @@ npm-debug.log*
 .env
 .env.local
 .env.*.local
-
-# OpenSpec (experimental workflow artifacts - do not commit)
-openspec/

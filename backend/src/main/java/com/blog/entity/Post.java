@@ -2,6 +2,7 @@ package com.blog.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,6 +13,7 @@ public class Post {
   private Long id;
 
   @NotBlank(message = "Title must not be blank")
+  @Size(min = 1, max = 200, message = "Title must be at most 200 characters")
   @Column(nullable = false, length = 200)
   private String title;
 

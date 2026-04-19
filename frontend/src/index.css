@@ -59,3 +59,27 @@ body {
 
 .loading, .error { padding: 40px; text-align: center; }
 .error { color: var(--danger); }
+
+.pagination-summary {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+.field-error {
+  display: block;
+  color: var(--danger);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+  border-color: var(--border);
+}
+
+.form-group input.error,
+.form-group textarea.error {
+  border-color: var(--danger);
+}

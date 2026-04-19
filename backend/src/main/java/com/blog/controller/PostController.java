@@ -2,12 +2,13 @@ package com.blog.controller;
 
 import com.blog.entity.Post;
 import com.blog.service.PostService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -20,8 +21,8 @@ public class PostController {
   }
 
   @GetMapping
-  public List<Post> getAll() {
-    return postService.findAll();
+  public Page<Post> getAll(Pageable pageable) {
+    return postService.findAll(pageable);
   }
 
   @GetMapping("/{id}")

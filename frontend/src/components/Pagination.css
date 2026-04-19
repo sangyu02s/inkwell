@@ -1,0 +1,76 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.pagination .btn {
+  min-width: 40px;
+}
+
+.pagination .btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.pagination .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.skeleton-card {
+  background: var(--card-bg);
+  padding: 20px;
+  margin-bottom: 16px;
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.skeleton-meta {
+  margin-top: 12px;
+}
+
+.skeleton-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.post-list-skeleton {
+  padding: 0;
+}
+
+.post-detail-skeleton {
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: var(--radius);
+}
+
+.post-detail-skeleton .skeleton-meta {
+  margin-top: 12px;
+  margin-bottom: 20px;
+}
+
+.skeleton-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.error-boundary {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.error-boundary h2 {
+  margin-bottom: 12px;
+}
+
+.error-boundary p {
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
