@@ -3,6 +3,7 @@ package com.blog.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,6 +22,14 @@ public class Ink {
   @NotBlank(message = "Content must not be blank")
   @Column(nullable = false, columnDefinition = "TEXT")
   private String content;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "author_id", nullable = false)
+  @JsonIgnore
+  private User author;
+
+  @Column(name = "author_username", nullable = false)
+  private String authorUsername;
 
   @Column(name = "created_at", updatable = false)
   private LocalDateTime createdAt;
@@ -50,6 +59,22 @@ public class Ink {
 
   public void setContent(String content) {
     this.content = content;
+  }
+
+  public User getAuthor() {
+    return author;
+  }
+
+  public void setAuthor(User author) {
+    this.author = author;
+  }
+
+  public String getAuthorUsername() {
+    return authorUsername;
+  }
+
+  public void setAuthorUsername(String authorUsername) {
+    this.authorUsername = authorUsername;
   }
 
   public LocalDateTime getCreatedAt() {
