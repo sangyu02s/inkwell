@@ -34,6 +34,11 @@ public class Ink {
   @Column(name = "created_at", updatable = false)
   private LocalDateTime createdAt;
 
+  @Transient
+  public Long getAuthorId() {
+    return author != null ? author.getId() : null;
+  }
+
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 

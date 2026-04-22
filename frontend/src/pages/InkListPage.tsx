@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 import { inksApi } from '../api/inks';
 import PostListSkeleton from '../components/PostListSkeleton';
 import Pagination from '../components/Pagination';
+import { useAuth } from '../contexts/useAuth';
 
 const DEFAULT_PAGE = 0;
 const DEFAULT_SIZE = 10;
 
 export default function InkListPage() {
+  const { user } = useAuth();
   const queryClient = useQueryClient();
   const [page, setPage] = useState(DEFAULT_PAGE);
   const [size] = useState(DEFAULT_SIZE);
@@ -43,16 +45,24 @@ export default function InkListPage() {
           {pageData?.content.map(ink => (
             <article key={ink.id} className="post-card">
               <h3><Link to={`/inks/${ink.id}`}>{ink.title}</Link></h3>
-              <p className="post-meta">{new Date(ink.createdAt).toLocaleDateString()}</p>
+              <p className="post-meta">By {ink.authorUsername} on {new Date(ink.createdAt).toLocaleDateString()}</p>
               <div className="post-actions">
                 <Link to={`/inks/${ink.id}`} className="btn">View</Link>
-                <Link to={`/inks/${ink.id}/edit`} className="btn">Edit</Link>
-                <button
-                  onClick={() => deleteMutation.mutate(ink.id)}
-                  className="btn btn-danger"
-                >
-                  Delete
-                </button>
+                {user?.id === ink.authorId && (
+                  <>
+                    <Link to={`/inks/${ink.id}/edit`} className="btn">Edit</Link>
+                    <button
+                      onClick={() => {
+                        if (confirm('Delete this ink?')) {
+                          deleteMutation.mutate(ink.id);
+                        }
+                      }}
+                      className="btn btn-danger"
+                    >
+                      Delete
+                    </button>
+                  </>
+                )}
               </div>
             </article>
           ))}

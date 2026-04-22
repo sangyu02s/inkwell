@@ -17,7 +17,6 @@ export default function Navigation() {
   return (
     <nav>
       <Link to="/auth/login">Login</Link>
-      <Link to="/auth/register">Register</Link>
     </nav>
   );
 }

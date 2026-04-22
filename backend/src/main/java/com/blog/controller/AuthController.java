@@ -21,7 +21,7 @@ public class AuthController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<?> register(@RequestBody Map<String, String> body) {
+  public ResponseEntity<?> register(@RequestBody Map<String, String> body, jakarta.servlet.http.HttpServletResponse response) {
     String username = body.get("username");
     String email = body.get("email");
     String password = body.get("password");
@@ -38,6 +38,7 @@ public class AuthController {
 
     try {
       String token = authService.register(username, email, password);
+      setTokenCookie(response, token);
       return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("token", token));
     } catch (IllegalStateException e) {
       return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", e.getMessage()));
@@ -45,16 +46,25 @@ public class AuthController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
+  public ResponseEntity<?> login(@RequestBody Map<String, String> body, jakarta.servlet.http.HttpServletResponse response) {
     String username = body.get("username");
     String password = body.get("password");
 
     try {
       String token = authService.login(username, password);
+      setTokenCookie(response, token);
       return ResponseEntity.ok(Map.of("token", token));
     } catch (BadCredentialsException e) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials"));
     }
+  }
+
+  private void setTokenCookie(jakarta.servlet.http.HttpServletResponse response, String token) {
+    jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("token", token);
+    cookie.setHttpOnly(true);
+    cookie.setPath("/");
+    cookie.setMaxAge(86400);
+    response.addCookie(cookie);
   }
 
   @GetMapping("/me")

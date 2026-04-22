@@ -34,7 +34,7 @@ export default function RegisterPage() {
 
     try {
       await register(username, email, password);
-      navigate('/inks');
+      navigate('/');
     } catch (err: unknown) {
       const error = err as { response?: { data?: { error?: string } } };
       setError(error.response?.data?.error || 'Registration failed');
