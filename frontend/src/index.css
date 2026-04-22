@@ -28,9 +28,10 @@ body {
 }
 .header h1 a { color: var(--primary); text-decoration: none; }
 
-.btn, .btn-primary {
-  display: inline-block; padding: 8px 16px; border-radius: var(--radius);
+.btn, .btn-primary, .btn-danger {
+  display: inline-block; padding: 6px 12px; border-radius: var(--radius);
   text-decoration: none; cursor: pointer; border: none; font-size: 14px;
+  min-width: 60px; text-align: center; box-sizing: border-box; line-height: 1.4;
 }
 .btn { background: var(--card-bg); border: 1px solid var(--border); color: var(--text); }
 .btn-primary { background: var(--primary); color: white; }
@@ -42,10 +43,29 @@ body {
 }
 .post-card h3 a { color: var(--text); text-decoration: none; }
 .post-card h3 a:hover { color: var(--primary); }
+.post-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.post-card-header h3 { margin: 0; }
+.post-card-header .post-meta { margin: 0; white-space: nowrap; }
+.post-excerpt {
+  margin-top: 12px;
+  color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .post-meta { color: var(--text-muted); font-size: 14px; margin: 8px 0; }
 .post-actions { display: flex; gap: 8px; margin-top: 12px; }
 
 .post-detail { background: var(--card-bg); padding: 30px; border-radius: var(--radius); }
+.post-detail-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.post-detail-header h2 { margin: 0 0 8px 0; }
+.post-detail-header .post-meta { margin: 0; }
+.post-detail-actions { display: flex; gap: 8px; align-items: center; }
+.post-detail-actions a, .post-detail-actions .btn-icon { cursor: pointer; text-decoration: none; transition: opacity 0.2s; }
+.post-detail-actions a:hover, .post-detail-actions .btn-icon:hover { opacity: 0.7; }
+.btn-icon { background: none; border: none; padding: 0; font-size: 20px; }
 .post-content { margin-top: 20px; white-space: pre-wrap; }
 
 .post-form { background: var(--card-bg); padding: 30px; border-radius: var(--radius); }

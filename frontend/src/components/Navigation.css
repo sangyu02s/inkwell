@@ -1,0 +1,49 @@
+.nav-user-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-username {
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  color: var(--text);
+  font-weight: 500;
+}
+
+.nav-username:hover {
+  background: var(--border);
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  min-width: 120px;
+  z-index: 100;
+}
+
+.nav-user-dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.dropdown-item:hover {
+  background: var(--bg);
+}

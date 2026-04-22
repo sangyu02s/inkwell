@@ -21,25 +21,34 @@ export default function InkDetailPage() {
 
   return (
     <article className="post-detail">
-      <h2>{ink.title}</h2>
-      <p className="post-meta">
-        By {ink.authorUsername} on {new Date(ink.createdAt).toLocaleDateString()}
-        {ink.updatedAt && ` (updated: ${new Date(ink.updatedAt).toLocaleDateString()})`}
-      </p>
-      <div className="post-content">{ink.content}</div>
-      <div className="post-actions">
-        {canEdit && (
-          <>
-            <Link to={`/inks/${ink.id}/edit`} className="btn">Edit</Link>
-            <button onClick={() => {
-              if (confirm('Delete this ink?')) {
-                inksApi.delete(ink.id).then(() => window.location.href = '/');
-              }
-            }} className="btn">Delete</button>
-          </>
-        )}
-        <Link to="/" className="btn">Back</Link>
+      <div className="post-detail-header">
+        <div>
+          <h2>{ink.title}</h2>
+          <p className="post-meta">
+            By {ink.authorUsername} on {new Date(ink.createdAt).toLocaleDateString()}
+            {ink.updatedAt && ` (updated: ${new Date(ink.updatedAt).toLocaleDateString()})`}
+          </p>
+        </div>
+        <div className="post-detail-actions">
+          <Link to="/" className="btn">Back</Link>
+          {canEdit && (
+            <>
+              <Link to={`/inks/${ink.id}/edit`} className="btn">Edit</Link>
+              <button
+                onClick={() => {
+                  if (confirm('Delete this ink?')) {
+                    inksApi.delete(ink.id).then(() => window.location.href = '/');
+                  }
+                }}
+                className="btn btn-danger"
+              >
+                Delete
+              </button>
+            </>
+          )}
+        </div>
       </div>
+      <div className="post-content">{ink.content}</div>
     </article>
   );
 }

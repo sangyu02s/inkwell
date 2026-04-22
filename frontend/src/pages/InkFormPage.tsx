@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { inksApi } from '../api/inks';
 import { postTitleSchema, postContentSchema } from '../validation/schemas';
 
@@ -35,7 +35,7 @@ export default function InkFormPage() {
   const mutation = useMutation({
     mutationFn: (data: { title: string; content: string }) =>
       isEdit ? inksApi.update(Number(id), data) : inksApi.create(data),
-    onSuccess: () => navigate('/'),
+    onSuccess: () => navigate(-1),
   });
 
   const validate = (): boolean => {
@@ -94,7 +94,7 @@ export default function InkFormPage() {
           <button type="submit" className="btn-primary" disabled={hasErrors || mutation.isPending}>
             {mutation.isPending ? 'Saving...' : 'Save'}
           </button>
-          <Link to="/" className="btn">Cancel</Link>
+          <button type="button" onClick={() => navigate(-1)} className="btn">Cancel</button>
         </div>
       </form>
     </div>
