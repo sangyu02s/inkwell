@@ -2,6 +2,7 @@ package com.blog.controller;
 
 import com.blog.config.UserPrincipal;
 import com.blog.entity.Ink;
+import com.blog.entity.Tag;
 import com.blog.entity.User;
 import com.blog.repository.UserRepository;
 import com.blog.service.InkService;
@@ -13,6 +14,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/inks")
@@ -27,7 +32,17 @@ public class InkController {
   }
 
   @GetMapping
-  public Page<Ink> getAll(Pageable pageable) {
+  public Page<Ink> getAll(
+      Pageable pageable,
+      @RequestParam(required = false) String tag,
+      @RequestParam(required = false) String tags) {
+    if (tag != null && !tag.isBlank()) {
+      return inkService.findByTag(tag, pageable);
+    }
+    if (tags != null && !tags.isBlank()) {
+      List<String> tagList = Arrays.asList(tags.split(","));
+      return inkService.findByTags(tagList, pageable);
+    }
     return inkService.findAll(pageable);
   }
 
@@ -76,5 +91,37 @@ public class InkController {
     }
     inkService.delete(id);
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("/{id}/tags")
+  public ResponseEntity<?> getTags(@PathVariable Long id) {
+    try {
+      Set<Tag> tags = inkService.getTags(id);
+      return ResponseEntity.ok(tags);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+    }
+  }
+
+  @PutMapping("/{id}/tags")
+  public ResponseEntity<?> updateTags(@PathVariable Long id, @RequestBody Map<String, List<Long>> body, Authentication authentication) {
+    if (authentication == null || !(authentication.getPrincipal() instanceof UserPrincipal)) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Authentication required"));
+    }
+    UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+    Ink existing = inkService.findById(id);
+    if (!existing.getAuthor().getId().equals(principal.userId())) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "You can only edit your own inks"));
+    }
+    List<Long> tagIds = body.get("tagIds");
+    if (tagIds == null) {
+      return ResponseEntity.badRequest().body(Map.of("error", "tagIds is required"));
+    }
+    try {
+      Ink updated = inkService.setTags(id, tagIds);
+      return ResponseEntity.ok(updated);
+    } catch (IllegalArgumentException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+    }
   }
 }

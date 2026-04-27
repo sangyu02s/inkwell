@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { inksApi } from '../api/inks';
 import PostDetailSkeleton from '../components/PostDetailSkeleton';
 import { useAuth } from '../contexts/useAuth';
+import TagChip from '../components/TagChip';
 
 export default function InkDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -28,6 +29,13 @@ export default function InkDetailPage() {
             By {ink.authorUsername} on {new Date(ink.createdAt).toLocaleDateString()}
             {ink.updatedAt && ` (updated: ${new Date(ink.updatedAt).toLocaleDateString()})`}
           </p>
+          {ink.tags && ink.tags.length > 0 && (
+            <div className="post-tags">
+              {ink.tags.map(tag => (
+                <TagChip key={tag.id} tag={tag} />
+              ))}
+            </div>
+          )}
         </div>
         <div className="post-detail-actions">
           <Link to="/" className="btn">Back</Link>

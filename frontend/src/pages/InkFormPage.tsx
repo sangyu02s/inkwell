@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { inksApi } from '../api/inks';
+import TagInput from '../components/TagInput';
 import { postTitleSchema, postContentSchema } from '../validation/schemas';
+import type { Tag } from '../types/Tag';
 
 interface FormErrors {
   title?: string;
@@ -16,11 +18,18 @@ export default function InkFormPage() {
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [errors, setErrors] = useState<FormErrors>({});
 
   const { data: ink } = useQuery({
     queryKey: ['inks', id],
     queryFn: () => inksApi.getById(Number(id)),
+    enabled: isEdit,
+  });
+
+  const { data: inkTags } = useQuery({
+    queryKey: ['inks', id, 'tags'],
+    queryFn: () => inksApi.getTags(Number(id)),
     enabled: isEdit,
   });
 
@@ -32,10 +41,24 @@ export default function InkFormPage() {
     }
   }, [ink]);
 
+  useEffect(() => {
+    if (inkTags) {
+      setSelectedTags(inkTags);
+    }
+  }, [inkTags]);
+
   const mutation = useMutation({
     mutationFn: (data: { title: string; content: string }) =>
       isEdit ? inksApi.update(Number(id), data) : inksApi.create(data),
-    onSuccess: () => navigate(-1),
+    onSuccess: () => {
+      if (isEdit && id) {
+        inksApi.updateTags(Number(id), selectedTags.map(t => t.id)).then(() => {
+          navigate(-1);
+        });
+      } else {
+        navigate(-1);
+      }
+    },
   });
 
   const validate = (): boolean => {
@@ -77,6 +100,10 @@ export default function InkFormPage() {
             }}
           />
           {errors.title && <span className="field-error">{errors.title}</span>}
+        </div>
+        <div className="form-group">
+          <label>Tags</label>
+          <TagInput selectedTags={selectedTags} onChange={setSelectedTags} />
         </div>
         <div className="form-group">
           <label>Content</label>

@@ -1,3 +1,5 @@
+import type { Tag } from './Tag';
+
 export interface Ink {
   id: number;
   title: string;
@@ -6,4 +8,5 @@ export interface Ink {
   authorUsername: string;
   createdAt: string;
   updatedAt: string | null;
+  tags?: Tag[];
 }

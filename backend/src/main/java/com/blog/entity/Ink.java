@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "inks")
@@ -30,6 +32,14 @@ public class Ink {
 
   @Column(name = "author_username", nullable = false)
   private String authorUsername;
+
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(
+    name = "ink_tags",
+    joinColumns = @JoinColumn(name = "ink_id"),
+    inverseJoinColumns = @JoinColumn(name = "tag_id")
+  )
+  private Set<Tag> tags = new HashSet<>();
 
   @Column(name = "created_at", updatable = false)
   private LocalDateTime createdAt;
@@ -96,5 +106,13 @@ public class Ink {
 
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
+  }
+
+  public Set<Tag> getTags() {
+    return tags;
+  }
+
+  public void setTags(Set<Tag> tags) {
+    this.tags = tags;
   }
 }
